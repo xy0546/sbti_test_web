@@ -9,42 +9,35 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
 
         body {
-            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
-            animation: bgMove 10s linear infinite alternate;
+            animation: bg 10s linear infinite alternate;
         }
 
-        @keyframes bgMove {
+        @keyframes bg {
             0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(30deg); }
+            100% { filter: hue-rotate(20deg); }
         }
 
-        .container {
+        .box {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 50px auto;
             background: white;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: fadeIn 0.8s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
         .title {
             text-align: center;
-            font-size: 28px;
+            font-size: 26px;
             color: #764ba2;
             margin-bottom: 10px;
-            font-weight: bold;
         }
 
         .subtitle {
@@ -54,150 +47,83 @@
         }
 
         .question {
-            background: #f8f9ff;
-            border-left: 5px solid #764ba2;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 10px;
             font-size: 16px;
-        }
-
-        .options {
-            margin: 10px 0;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f7f8ff;
+            border-left: 4px solid #764ba2;
+            border-radius: 10px;
         }
 
         .option {
             display: block;
-            padding: 10px 15px;
+            padding: 10px 14px;
             background: #f1f3ff;
             border-radius: 8px;
             margin: 8px 0;
             cursor: pointer;
-            transition: 0.2s;
         }
 
         .option:hover {
-            background: #e1e4ff;
+            background: #d5d9ff;
         }
 
-        .btn-submit {
+        button {
             width: 100%;
             padding: 15px;
             background: linear-gradient(90deg, #667eea, #764ba2);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 18px;
+            font-size: 17px;
             margin-top: 20px;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        .btn-submit:hover {
-            transform: scale(1.02);
-        }
-
-        /* 结果页样式 */
-        .result-box {
+        .result {
             text-align: center;
-            animation: zoomIn 0.8s ease;
+            animation: zoom 0.6s ease;
         }
 
-        @keyframes zoomIn {
+        @keyframes zoom {
             from { transform: scale(0.8); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
-        .result-icon {
-            font-size: 80px;
+        .icon {
+            font-size: 70px;
             margin: 20px 0;
         }
 
-        .result-name {
-            font-size: 28px;
+        .name {
+            font-size: 26px;
             color: #764ba2;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
-        .result-desc {
-            font-size: 17px;
+        .desc {
+            font-size: 16px;
             color: #444;
             line-height: 1.6;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        .share-box {
+        .share {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-top: 20px;
         }
 
-        .share-btn {
-            padding: 10px 18px;
+        .share button {
+            width: auto;
+            padding: 8px 16px;
             border-radius: 30px;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
-
-        .share-wechat {
-            background: #07c160;
-        }
-
-        .share-weibo {
-            background: #e6162d;
-        }
-
-        .restart {
-            margin-top: 20px;
-            padding: 10px 25px;
-            background: #eee;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        {% if not done %}
-        <div class="title">🧠 SBTI 傻大人格测试</div>
-        <div class="subtitle">31题测出你的真实隐藏人格</div>
-
-        <form method="post" id="testForm">
-            {% for q in questions %}
-            <div class="question">
-                {{ q.id }}. {{ q.q }}
-            </div>
-            <div class="options">
-                {% for opt in q.opts %}
-                <label class="option">
-                    <input type="radio" name="q{{ q.id }}" value="{{ loop.index }}" required>
-                    {{ opt }}
-                </label>
-                {% endfor %}
-            </div>
-            {% endfor %}
-
-            <button class="btn-submit" type="submit">🚀 查看我的魔性人格</button>
-        </form>
-
-        {% else %}
-        <div class="result-box">
-            <div class="result-icon">{{ result.pic }}</div>
-            <div class="result-name">{{ result.name }}</div>
-            <div class="result-desc">{{ result.desc }}</div>
-
-            <div class="share-box">
-                <button class="share-btn share-wechat" onclick="alert('分享到微信！')">微信分享</button>
-                <button class="share-btn share-weibo" onclick="alert('分享到微博！')">微博分享</button>
-            </div>
-
-            <button class="restart" onclick="location.href='/'">重新测试</button>
-        </div>
-        {% endif %}
-    </div>
+    <div class="box" id="app"></div>
+    <script src="script.js"></script>
 </body>
 </html>
